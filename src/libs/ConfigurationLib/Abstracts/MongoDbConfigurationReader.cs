@@ -1,19 +1,49 @@
-﻿using MongoDB.Driver;
+﻿using ConfigurationLib.Models;
+using MongoDB.Driver;
 using System;
+using System.Threading.Tasks;
 
 namespace ConfigLib.Abstracts
 {
+    /// <summary>
+    /// The mongo db configuration reader.
+    /// </summary>
     public abstract class MongoDbConfigurationReader : ConfigurationReaderBase
     {
         #region fields
 
-        public const string recordName = "ApplicationConfiguration";
+        /// <summary>
+        /// The collection name.
+        /// </summary>
+        public const string collectionName = "Configurations";
+        /// <summary>
+        /// The database name.
+        /// </summary>
+        public const string databaseName = "ApplicationConfigurationDB";
+        /// <summary>
+        /// The collection.
+        /// </summary>
+        private readonly IMongoCollection<ApplicationConfiguration> _collection;
+        /// <summary>
+        /// The connection string.
+        /// </summary>
         private readonly string _connectionString;
-        private readonly Lazy<IMongoDatabase> _lazy_database;
+        /// <summary>
+        /// The database.
+        /// </summary>
+        private readonly IMongoDatabase _database;
+        /// <summary>
+        /// The mongo client.
+        /// </summary>
         private readonly MongoClient _mongoClient;
 
         #endregion fields
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="MongoDbConfigurationReader"/> class.
+        /// </summary>
+        /// <param name="connectionString">The connection string.</param>
+        /// <param name="refreshTimerIntervalInMs">The refresh timer ınterval ın ms.</param>
         public MongoDbConfigurationReader(string connectionString, int refreshTimerIntervalInMs)
             : base(refreshTimerIntervalInMs)
         {
@@ -24,16 +54,37 @@ namespace ConfigLib.Abstracts
 
             _mongoClient = InitializeMongoClient(connectionString);
 
-            _lazy_database = new(() => _mongoClient.GetDatabase(recordName));
+            _database = _mongoClient.GetDatabase(databaseName);
+
+            _database.CreateCollection(collectionName);
+
+            _collection = _database.GetCollection<ApplicationConfiguration>(collectionName);
         }
 
         #region protected methods
 
-        protected IMongoDatabase Database => _lazy_database.Value;
-
+        /// <summary>
+        /// Initializes mongo client.
+        /// </summary>
+        /// <param name="connectionString">The connection string.</param>
+        /// <returns>A <see cref="MongoClient"/></returns>
         protected MongoClient InitializeMongoClient(string connectionString)
             => new(connectionString);
 
         #endregion protected methods
+
+        #region private methods
+
+        /// <summary>
+        /// List configuration by application name.
+        /// </summary>
+        /// <param name="applicationName">The application name.</param>
+        /// <returns>A <see cref="Task"/> of type IAsyncCursor</returns>
+        protected async Task<IAsyncCursor<ApplicationConfiguration>> ListConfigurationByApplicationNameAsync(string applicationName)
+        {
+            return await _collection.FindAsync(f => f.ApplicationName.ToLowerInvariant() == applicationName.ToLowerInvariant() && f.IsActive == true);
+        }
+
+        #endregion private methods
     }
 }

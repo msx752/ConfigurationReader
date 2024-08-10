@@ -1,14 +1,28 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using ConfigLib.Abstracts;
 using ConfigLib.Interfaces;
 
 namespace ConfigLib
 {
+    /// <summary>
+    /// The configuration reader.
+    /// </summary>
     public sealed class ConfigurationReader : MongoDbConfigurationReader, IConfigurationReader
     {
+        /// <summary>
+        /// The application name.
+        /// </summary>
         private readonly string _applicationName;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ConfigurationReader"/> class.
+        /// </summary>
+        /// <param name="applicationName">The application name.</param>
+        /// <param name="connectionString">The connection string.</param>
+        /// <param name="refreshTimerIntervalInMs">The refresh timer ınterval ın ms.</param>
         public ConfigurationReader(string applicationName, string connectionString, int refreshTimerIntervalInMs)
             : base(connectionString, refreshTimerIntervalInMs)
         {
@@ -20,25 +34,50 @@ namespace ConfigLib
             StartTimer();
         }
 
-        protected override async Task TickAsync()
+        /// <summary>
+        /// TODO: Add Summary.
+        /// </summary>
+        /// <returns>A <see cref="Task"/></returns>
+        protected override async Task TriggerAsync()
         {
-            try
-            {
-                //TODO: fetch mongodb on here and update local collection
-                //we need to remove InActive status after fetch
-                //use _InternalSetObject(key, val); after fecthing
-                /*
-                    if (!IsSupportedType(typeof(T)))
-                        throw new ArgumentNullException(typeof(T).Name, "specified type not supported.");
+            using var cursor = await ListConfigurationByApplicationNameAsync(_applicationName);
 
-                    //TODO: update mongodb here
+            var previousKeys = Collection.Keys.ToHashSet();
+            HashSet<string> newKeys = new();
 
-                    _ = Collection.AddOrUpdate(key, val, (k, v) => val);
-                 */
-            }
-            catch (Exception e)
+            while (await cursor.MoveNextAsync())
             {
+                foreach (var applicationConfiguration in cursor.Current)
+                {
+                    try
+                    {
+                        string configName = applicationConfiguration.Name?.Trim();
+
+                        if (string.IsNullOrWhiteSpace(configName))
+                            continue;
+
+                        Type type = GetSupportedTypeByStringType(applicationConfiguration.Type);
+
+                        if (type == null)
+                            continue;
+
+                        object configValue = Convert.ChangeType(applicationConfiguration.Value, type);
+
+                        Collection.AddOrUpdate(configName, configValue, (k, v) => configValue);
+
+                        newKeys.Add(configName);
+                    }
+                    catch
+                    {
+                    }
+                }
             }
+
+            var listDeleteKeys = previousKeys.Except(newKeys);
+
+            foreach (var deleteKey in listDeleteKeys)
+                Collection.TryRemove(deleteKey, out _);
+
         }
     }
 }

@@ -18,9 +18,11 @@ namespace ConfigLib.Abstracts
         });
 
         private readonly ConcurrentDictionary<string, object> _configurationCollection = new(StringComparer.InvariantCultureIgnoreCase);
+        private readonly object _lock_timer = new();
         private readonly int _refreshTimerIntervalInMs;
         private readonly Timer _timer;
         private bool _disposedValue;
+        private bool inProgress = false;
 
         #endregion fields
 
@@ -31,7 +33,7 @@ namespace ConfigLib.Abstracts
 
             _refreshTimerIntervalInMs = refreshTimerIntervalInMs;
 
-            _timer = InitializeTimer(async _ => await TickAsync(), _refreshTimerIntervalInMs);
+            _timer = InitializeTimer(async _ => await ElapsedAsync(), _refreshTimerIntervalInMs);
         }
 
         protected ConcurrentDictionary<string, object> Collection => _configurationCollection;
@@ -87,14 +89,6 @@ namespace ConfigLib.Abstracts
             return null;
         }
 
-        internal static bool IsSupportedStringType(string stringType)
-        {
-            if (string.IsNullOrWhiteSpace(stringType))
-                return false;
-
-            return _supportedTypes.ContainsValue(stringType);
-        }
-
         internal static bool IsSupportedType(Type type)
         {
             if (type == null)
@@ -131,8 +125,41 @@ namespace ConfigLib.Abstracts
             _timer?.Change(0, _refreshTimerIntervalInMs);
         }
 
-        protected abstract Task TickAsync();
+        protected abstract Task TriggerAsync();
 
         #endregion protected methods
+
+        #region private methods
+
+        private async Task ElapsedAsync()
+        {
+            if (inProgress)
+            {
+                lock (_lock_timer)
+                {
+                    if (inProgress)
+                    {
+                        _timer?.Change(_refreshTimerIntervalInMs, _refreshTimerIntervalInMs);
+                        return;
+                    }
+                }
+            }
+
+            inProgress = true;
+
+            try
+            {
+                await TriggerAsync();
+            }
+            catch
+            {
+            }
+            finally
+            {
+                inProgress = false;
+            }
+        }
+
+        #endregion private methods
     }
 }
