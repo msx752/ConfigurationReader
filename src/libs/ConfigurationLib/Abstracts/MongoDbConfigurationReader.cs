@@ -16,22 +16,27 @@ namespace ConfigLib.Abstracts
         /// The collection name.
         /// </summary>
         public const string collectionName = "Configurations";
+
         /// <summary>
         /// The database name.
         /// </summary>
         public const string databaseName = "ApplicationConfigurationDB";
+
         /// <summary>
         /// The collection.
         /// </summary>
         private readonly IMongoCollection<ApplicationConfiguration> _collection;
+
         /// <summary>
         /// The connection string.
         /// </summary>
         private readonly string _connectionString;
+
         /// <summary>
         /// The database.
         /// </summary>
         private readonly IMongoDatabase _database;
+
         /// <summary>
         /// The mongo client.
         /// </summary>
@@ -55,8 +60,6 @@ namespace ConfigLib.Abstracts
             _mongoClient = InitializeMongoClient(connectionString);
 
             _database = _mongoClient.GetDatabase(databaseName);
-
-            _database.CreateCollection(collectionName);
 
             _collection = _database.GetCollection<ApplicationConfiguration>(collectionName);
         }
@@ -82,6 +85,8 @@ namespace ConfigLib.Abstracts
         /// <returns>A <see cref="Task"/> of type IAsyncCursor</returns>
         protected async Task<IAsyncCursor<ApplicationConfiguration>> ListConfigurationByApplicationNameAsync(string applicationName)
         {
+            _database.CreateCollection(collectionName);
+
             return await _collection.FindAsync(f => f.ApplicationName.ToLowerInvariant() == applicationName.ToLowerInvariant() && f.IsActive == true);
         }
 

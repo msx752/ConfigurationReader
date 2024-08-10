@@ -1,9 +1,9 @@
-﻿using System;
+﻿using ConfigLib.Abstracts;
+using ConfigLib.Interfaces;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using ConfigLib.Abstracts;
-using ConfigLib.Interfaces;
 
 namespace ConfigLib
 {
@@ -77,7 +77,6 @@ namespace ConfigLib
 
             foreach (var deleteKey in listDeleteKeys)
                 Collection.TryRemove(deleteKey, out _);
-
         }
     }
 }
