@@ -3,9 +3,31 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.10.35013.160
 MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConfigurationLib", "src\libs\ConfigurationLib\ConfigurationLib.csproj", "{B9C82073-7A98-49E3-9DB0-CF8E4A9F9880}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{719F3E35-9732-4DC5-8061-00170B7D4DBC}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "libs", "libs", "{CCE2DA55-8FAE-4EEF-9D8E-D902FB88644E}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{1255F662-FB6E-497E-8041-30E3D460835F}"
+EndProject
 Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B9C82073-7A98-49E3-9DB0-CF8E4A9F9880}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B9C82073-7A98-49E3-9DB0-CF8E4A9F9880}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B9C82073-7A98-49E3-9DB0-CF8E4A9F9880}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B9C82073-7A98-49E3-9DB0-CF8E4A9F9880}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{B9C82073-7A98-49E3-9DB0-CF8E4A9F9880} = {CCE2DA55-8FAE-4EEF-9D8E-D902FB88644E}
+		{CCE2DA55-8FAE-4EEF-9D8E-D902FB88644E} = {719F3E35-9732-4DC5-8061-00170B7D4DBC}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {83F4014C-7823-4F80-9E3C-C6799B38BD3E}
