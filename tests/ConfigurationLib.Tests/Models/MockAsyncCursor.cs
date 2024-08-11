@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace ConfigurationLib.Tests
+namespace ConfigurationLib.Tests.Models
 {
     public class MockAsyncCursor<T> : IAsyncCursor<T>
     {

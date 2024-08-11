@@ -1,4 +1,5 @@
 ﻿using ConfigurationLib.Models;
+using ConfigurationLib.Tests.Helpers;
 using MongoDB.Driver;
 using Moq;
 using Shouldly;
@@ -6,7 +7,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace ConfigurationLib.Tests
+namespace ConfigurationLib.Tests.Units
 {
     public class MongoDbConfigurationReaderTests
     {

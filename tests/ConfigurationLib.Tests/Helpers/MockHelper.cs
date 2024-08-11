@@ -1,10 +1,10 @@
 ﻿using ConfigurationLib.Abstracts;
 using ConfigurationLib.Models;
-using MongoDB.Driver;
+using ConfigurationLib.Tests.Models;
 using Moq;
 using System.Collections.Generic;
 
-namespace ConfigurationLib.Tests
+namespace ConfigurationLib.Tests.Helpers
 {
     public static class MockHelper
     {
@@ -26,16 +26,6 @@ namespace ConfigurationLib.Tests
         public static Mock<MockAsyncCursor<ApplicationConfiguration>> CreateDefaultCursor(List<ApplicationConfiguration> configurations)
         {
             return new Mock<MockAsyncCursor<ApplicationConfiguration>>(configurations) { CallBase = true };
-        }
-
-        public static Mock<IMongoDatabase> CreateDefaultIMongoDatabase()
-        {
-            return new Mock<IMongoDatabase>();
-        }
-
-        public static Mock<IMongoCollection<ApplicationConfiguration>> CreateDefaultIMongoCollection()
-        {
-            return new Mock<IMongoCollection<ApplicationConfiguration>>();
         }
     }
 }

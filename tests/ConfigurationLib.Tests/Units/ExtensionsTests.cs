@@ -1,7 +1,8 @@
-﻿using System;
+﻿using Shouldly;
+using System;
 using Xunit;
 
-namespace ConfigurationLib.Tests
+namespace ConfigurationLib.Tests.Units
 {
     public class ExtensionsTests
     {
@@ -16,7 +17,7 @@ namespace ConfigurationLib.Tests
             var result = Extensions.IsSupportedType(type);
 
             // Assert
-            Assert.True(result);
+            result.ShouldBeTrue();
         }
 
         [Theory]
@@ -31,13 +32,13 @@ namespace ConfigurationLib.Tests
             var result = Extensions.IsSupportedType(type);
 
             // Assert
-            Assert.False(result);
+            result.ShouldBeFalse();
         }
 
         [Theory]
         [InlineData("int")]
-        [InlineData("string")]
-        [InlineData("boolean")]
+        [InlineData("strIng")]
+        [InlineData("booleaN")]
         [InlineData("DOUBLE")]
         public void GetSupportedTypeByStringType_ShouldReturnCorrectType(string stringType)
         {
@@ -45,7 +46,7 @@ namespace ConfigurationLib.Tests
             var result = Extensions.GetSupportedTypeByStringType(stringType);
 
             // Assert
-            Assert.NotNull(result);
+            result.ShouldNotBeNull();
         }
 
         [Theory]
@@ -61,7 +62,7 @@ namespace ConfigurationLib.Tests
             var result = Extensions.GetSupportedTypeByStringType(stringType);
 
             // Assert
-            Assert.Null(result);
+            result.ShouldBeNull();
         }
     }
 }

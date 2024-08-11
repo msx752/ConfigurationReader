@@ -2,6 +2,7 @@
 using Polly.CircuitBreaker;
 using System;
 using System.Collections.Concurrent;
+using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -107,6 +108,10 @@ namespace ConfigurationLib.Abstracts
             {
                 await _circuitBreakerPolicy.ExecuteAsync(async () => await TriggerAsync());
             }
+            catch (BrokenCircuitException ex)
+            {
+
+            }
             catch (Exception ex)
             {
             }
@@ -199,6 +204,8 @@ namespace ConfigurationLib.Abstracts
                     onBreak: (exception, timespan) =>
                     {
                         onBreak = true;
+                        if (Debugger.IsAttached)
+                            Debug.WriteLine($"PolicyException: {exception}");
                     },
                     onReset: () =>
                     {
