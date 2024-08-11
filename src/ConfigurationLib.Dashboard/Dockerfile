@@ -9,6 +9,7 @@ ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 COPY ["src/ConfigurationLib.Dashboard/ConfigurationLib.Dashboard.csproj", "src/ConfigurationLib.Dashboard/"]
 COPY ["src/libs/ConfigurationLib/ConfigurationLib.csproj", "src/libs/ConfigurationLib/"]
+COPY ["src/Shared.Kernel/Shared.Kernel.csproj", "src/Shared.Kernel/"]
 RUN dotnet restore "./src/ConfigurationLib.Dashboard/ConfigurationLib.Dashboard.csproj"
 COPY . .
 WORKDIR "/src/src/ConfigurationLib.Dashboard"
