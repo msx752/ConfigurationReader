@@ -140,7 +140,7 @@ namespace ConfigurationLib.Abstracts
                 else if (val is T)
                     return (T)val;
                 else
-                    throw new ArgumentException($"'{val.GetType().Name}' type doesn't match by requested '{typeof(T).Name}' type.");
+                    throw new ArgumentException($"'{val.GetType().Name}' type doesn't match by requested '{typeof(T).Name}' type for the key '{key}'.");
             }
             catch (Exception e)
             {
