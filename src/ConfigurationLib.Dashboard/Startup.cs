@@ -69,9 +69,9 @@ namespace ConfigurationLib.Dashboard
             services.AddScoped<IMongoDbContext>(x => new MongoDbContext(Configuration.GetConnectionString("MongoDbConnectionString")));
             services.AddScoped<IApplicationConfigurationRepository, ApplicationConfigurationRepository>();
             services.AddScoped<IExceptionLogRepository, ExceptionLogRepository>();
+            services.AddScoped<IMessageBus, MessageBus>();
 
             services.AddSingleton(logger);
-            services.AddSingleton<IMessageBus, MessageBus>();
             services.AddSingleton<IConfigurationReader>(x => 
                 new ConfigurationReader(Configuration["AppName"], 
                 Configuration.GetConnectionString("MongoDbConnectionString"), 

@@ -16,6 +16,8 @@ services:
         - MONGO_INITDB_DATABASE=ApplicationConfigurationDb
     ports:
         - "27017-27019:27017-27019"
+    volumes:
+      - mongodb_data:/data/db
 
   dashboard:
     image: mustafasalih/configuration-lib:dashboard
@@ -26,6 +28,8 @@ services:
      dockerfile: src/ConfigurationLib.Dashboard/Dockerfile
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
+    ports:
+        - "50400:80"
     depends_on:
       - "myrabbitmq"
       - "mymongodb"
@@ -39,6 +43,11 @@ services:
      dockerfile: src/ConfigurationLib.LogService/Dockerfile
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
+    ports:
+        - "50600:80"  
     depends_on:
       - "myrabbitmq"
       - "mymongodb"
+
+volumes:
+  mongodb_data:
