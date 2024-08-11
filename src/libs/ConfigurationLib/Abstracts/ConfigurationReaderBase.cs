@@ -136,7 +136,7 @@ namespace ConfigurationLib.Abstracts
                 _ = Collection.TryGetValue(key, out var val);
 
                 if (val == null)
-                    return default;
+                    return default; // TODO: throw exception or return default value?
                 else if (val is T)
                     return (T)val;
                 else
