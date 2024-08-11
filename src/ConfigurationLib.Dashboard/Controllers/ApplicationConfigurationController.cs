@@ -5,7 +5,7 @@ using ConfigurationLib.Models.Dtos;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using MongoDB.Bson;
-using Shared.Kernel.Repositories;
+using Shared.Kernel.Repositories.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -35,15 +35,24 @@ namespace ConfigurationLib.Dashboard.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> Edit([FromRoute] string id)
         {
-            if (!ObjectId.TryParse(id, out var idValue))
-                throw new InvalidCastException(nameof(id));
+            try
+            {
+                if (!ObjectId.TryParse(id, out var idValue))
+                    throw new InvalidCastException(nameof(id));
 
-            ApplicationConfigurationViewModel model = new();
+                ApplicationConfigurationViewModel model = new();
 
-            var response = await _applicationConfigurationRepository.GetById(idValue);
-            model.Editing = _mapper.Map<ApplicationConfigurationDto>(response);
+                var response = await _applicationConfigurationRepository.GetByIdAsync(idValue);
+                model.Editing = _mapper.Map<ApplicationConfigurationDto>(response);
 
-            return View(model);
+                return View(model);
+            }
+            catch (Exception e)
+            {
+
+                var routeValues = new { message = e.Message, stackTrace = e.StackTrace };
+                return RedirectToAction("Error", "Home", routeValues);
+            }
         }
 
         [HttpPost("{id}")]
@@ -62,7 +71,7 @@ namespace ConfigurationLib.Dashboard.Controllers
 
                 var editedModel = _mapper.Map<ApplicationConfiguration>(model.Editing);
 
-                await _applicationConfigurationRepository.Update(editedModel);
+                await _applicationConfigurationRepository.UpdateAsync(editedModel);
 
                 return RedirectToAction("Index");
             }
@@ -97,7 +106,7 @@ namespace ConfigurationLib.Dashboard.Controllers
 
                 var createdModel = _mapper.Map<ApplicationConfiguration>(model.Creating);
 
-                await _applicationConfigurationRepository.Add(createdModel);
+                await _applicationConfigurationRepository.AddAsync(createdModel);
 
                 return RedirectToAction("Index");
             }

@@ -17,6 +17,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConfigurationLib.Dashboard"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Shared.Kernel", "src\Shared.Kernel\Shared.Kernel.csproj", "{BFCD4A0B-5649-4B55-ACD6-04068F3588FE}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConfigurationLib.LogService", "src\ConfigurationLib.LogService\ConfigurationLib.LogService.csproj", "{3E2A5B15-9742-41CD-BD47-B88F7BAD2D07}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{BFCD4A0B-5649-4B55-ACD6-04068F3588FE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BFCD4A0B-5649-4B55-ACD6-04068F3588FE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BFCD4A0B-5649-4B55-ACD6-04068F3588FE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3E2A5B15-9742-41CD-BD47-B88F7BAD2D07}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3E2A5B15-9742-41CD-BD47-B88F7BAD2D07}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3E2A5B15-9742-41CD-BD47-B88F7BAD2D07}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3E2A5B15-9742-41CD-BD47-B88F7BAD2D07}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -49,6 +55,7 @@ Global
 		{1728EEF4-D787-42B2-A727-AFFE75A26DFA} = {1255F662-FB6E-497E-8041-30E3D460835F}
 		{CFB3FFF6-FD37-41B5-84C1-10728141EDB0} = {719F3E35-9732-4DC5-8061-00170B7D4DBC}
 		{BFCD4A0B-5649-4B55-ACD6-04068F3588FE} = {719F3E35-9732-4DC5-8061-00170B7D4DBC}
+		{3E2A5B15-9742-41CD-BD47-B88F7BAD2D07} = {719F3E35-9732-4DC5-8061-00170B7D4DBC}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {83F4014C-7823-4F80-9E3C-C6799B38BD3E}

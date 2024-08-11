@@ -1,10 +1,14 @@
-﻿@model HomeViewModel
+﻿@using Microsoft.Extensions.Configuration
+@model HomeViewModel
 @{
     ViewData["Title"] = "Current Environment Variables";
 }
+@inject IConfiguration _configuration
 <h1>@ViewData["Title"]</h1>
 
-<p>The information comes from ConfigurationReader.</p>
+<p>The information comes from ConfigurationReader. refresh interval is @(_configuration["RefreshTimerIntervalInMs"])ms</p>
+<p>when making <code>IsloggingEnabled</code> value true, service will pubish exception logs to the message broker, (trying to add invalid type to the configuration will throw an exception)</p>
+<p>when making <code>IsBrokerMessageShown</code> value true, broker service add log to the console when new event error arrived</p>
 
 <p>
     <strong>IsBasketEnabled:</strong> <code>@Model.CurrentEnvironment.IsBasketEnabled</code>
@@ -12,4 +16,6 @@
     <strong>MaxItemCount:</strong> <code>@Model.CurrentEnvironment.MaxItemCount</code>
     <br />
     <strong>SiteName:</strong> <code>@Model.CurrentEnvironment.SiteName</code>
+    <br />
+    <strong>IsBrokerMessageShown:</strong> <code>@Model.CurrentEnvironment.IsloggingEnabled</code>
 </p>

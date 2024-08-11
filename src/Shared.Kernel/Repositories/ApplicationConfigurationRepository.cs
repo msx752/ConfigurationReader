@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using Serilog;
 using Shared.Kernel.Data;
 using ConfigurationLib;
+using Shared.Kernel.Repositories.Interfaces;
 
 namespace Shared.Kernel.Repositories
 {
@@ -38,7 +39,7 @@ namespace Shared.Kernel.Repositories
             _logger = logger;
         }
 
-        public async Task Add(ApplicationConfiguration configuration)
+        public async Task AddAsync(ApplicationConfiguration configuration)
         {
             try
             {
@@ -77,7 +78,7 @@ namespace Shared.Kernel.Repositories
         /// </summary>
         /// <param name="id">The id.</param>
         /// <returns>A <see cref="Task"/> of type <see cref="ApplicationConfiguration"/></returns>
-        public async Task<ApplicationConfiguration> GetById(ObjectId id)
+        public async Task<ApplicationConfiguration> GetByIdAsync(ObjectId id)
         {
             if (id == ObjectId.Empty)
                 return null;
@@ -128,7 +129,7 @@ namespace Shared.Kernel.Repositories
             }
         }
 
-        public async Task Update(ApplicationConfiguration configuration)
+        public async Task UpdateAsync(ApplicationConfiguration configuration)
         {
             try
             {

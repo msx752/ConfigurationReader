@@ -1,0 +1,34 @@
+﻿@model HomeViewModel
+@{
+    ViewData["Title"] = "Global Exception Logs";
+}
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>ApplicationName</th>
+            <th>ExceptionMessage</th>
+            <th>ExceptionStackTrace</th>
+            <th>Timestamp (UTC)</th>
+            <th><a asp-controller="GlobalExceptionLog" asp-action="Index">Refresh Page</a></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.ExceptionLogs)
+        {
+            <tr>
+                <td>@item.ApplicationName</td>
+                <td>@item.ExceptionMessage</td>
+                <td>
+                    <span title="@item.ExceptionStackTrace">
+                        @item.ExceptionStackTrace?.Substring(0, Math.Min(50, @item.ExceptionStackTrace.Length))...
+                    </span>
+                </td>
+                <td>@item.Timestamp</td>
+                <td>
+
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

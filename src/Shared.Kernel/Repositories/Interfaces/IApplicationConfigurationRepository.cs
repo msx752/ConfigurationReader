@@ -3,13 +3,13 @@ using MongoDB.Bson;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace Shared.Kernel.Repositories
+namespace Shared.Kernel.Repositories.Interfaces
 {
     public interface IApplicationConfigurationRepository
     {
-        Task Add(ApplicationConfiguration configuration);
-        Task<ApplicationConfiguration> GetById(ObjectId id);
+        Task AddAsync(ApplicationConfiguration configuration);
+        Task<ApplicationConfiguration> GetByIdAsync(ObjectId id);
         Task<List<ApplicationConfiguration>> ListAsync(bool onlyActiveRecods = false, int pageNumber = 1, int pageSize = 100);
-        Task Update(ApplicationConfiguration configuration);
+        Task UpdateAsync(ApplicationConfiguration configuration);
     }
 }

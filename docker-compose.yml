@@ -1,0 +1,44 @@
+services:
+
+  myrabbitmq:
+    image: rabbitmq:3-management
+    container_name: myrabbitmq
+    restart: "on-failure"
+    ports:
+        - "5672:5672"
+        - "15672:15672"
+
+  mymongodb:
+    image: mongo:latest
+    container_name: mymongodb
+    restart: "on-failure"
+    environment:
+        - MONGO_INITDB_DATABASE=ApplicationConfigurationDb
+    ports:
+        - "27017-27019:27017-27019"
+
+  dashboard:
+    image: mustafasalih/configuration-lib:dashboard
+    container_name: dashboard
+    restart: "on-failure"
+    build:
+     context: .
+     dockerfile: src/ConfigurationLib.Dashboard/Dockerfile
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+    depends_on:
+      - "myrabbitmq"
+      - "mymongodb"
+
+  logservice:
+    image: mustafasalih/configuration-lib:logservice
+    container_name: logservice
+    restart: "on-failure"
+    build:
+     context: .
+     dockerfile: src/ConfigurationLib.LogService/Dockerfile
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+    depends_on:
+      - "myrabbitmq"
+      - "mymongodb"
