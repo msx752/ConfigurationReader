@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using ConfigurationLib.Models;
+﻿using ConfigurationLib.Models;
 using MongoDB.Bson;
 using MongoDB.Driver;
 using System;
@@ -7,8 +6,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Serilog;
+using Shared.Kernel.Data;
+using ConfigurationLib;
 
-namespace ConfigurationLib.Dashboard.Data.Repos
+namespace Shared.Kernel.Repositories
 {
     /// <summary>
     /// The application configuration repository.
@@ -21,11 +22,6 @@ namespace ConfigurationLib.Dashboard.Data.Repos
         private readonly ILogger _logger;
 
         /// <summary>
-        /// The mapper.
-        /// </summary>
-        private readonly IMapper _mapper;
-
-        /// <summary>
         /// The mongo db context.
         /// </summary>
         private readonly IMongoDbContext _mongoDbContext;
@@ -36,11 +32,10 @@ namespace ConfigurationLib.Dashboard.Data.Repos
         /// <param name="mongoDbContext">The mongo db context.</param>
         /// <param name="logger">The logger.</param>
         /// <param name="mapper">The mapper.</param>
-        public ApplicationConfigurationRepository(IMongoDbContext mongoDbContext, ILogger logger, IMapper mapper)
+        public ApplicationConfigurationRepository(IMongoDbContext mongoDbContext, ILogger logger)
         {
             _mongoDbContext = mongoDbContext;
             _logger = logger;
-            _mapper = mapper;
         }
 
         public async Task Add(ApplicationConfiguration configuration)
@@ -62,7 +57,7 @@ namespace ConfigurationLib.Dashboard.Data.Repos
                 if (string.IsNullOrEmpty(configuration.Value))
                     throw new ArgumentNullException(nameof(configuration.Value));
 
-                var type = ConfigurationLib.Extensions.GetSupportedTypeByStringType(configuration.Type);
+                var type = Extensions.GetSupportedTypeByStringType(configuration.Type);
                 if (type == null)
                     throw new NotSupportedException($"{configuration.Type} type not supported.");
 
@@ -152,7 +147,7 @@ namespace ConfigurationLib.Dashboard.Data.Repos
                 if (string.IsNullOrEmpty(configuration.Value))
                     throw new ArgumentNullException(nameof(configuration.Value));
 
-                var type = ConfigurationLib.Extensions.GetSupportedTypeByStringType(configuration.Type);
+                var type = Extensions.GetSupportedTypeByStringType(configuration.Type);
                 if (type == null)
                     throw new NotSupportedException($"{configuration.Type} type not supported.");
 

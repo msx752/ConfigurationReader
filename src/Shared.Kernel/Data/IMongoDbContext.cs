@@ -1,7 +1,7 @@
 ﻿using ConfigurationLib.Models;
 using MongoDB.Driver;
 
-namespace ConfigurationLib.Dashboard.Data
+namespace Shared.Kernel.Data
 {
     public interface IMongoDbContext
     {

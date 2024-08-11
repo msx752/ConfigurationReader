@@ -1,11 +1,11 @@
 ﻿using AutoMapper;
-using ConfigurationLib.Dashboard.Data.Repos;
 using ConfigurationLib.Dashboard.Models;
 using ConfigurationLib.Models;
 using ConfigurationLib.Models.Dtos;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using MongoDB.Bson;
+using Shared.Kernel.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;

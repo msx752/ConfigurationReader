@@ -18,6 +18,7 @@
 
 	<ItemGroup>
 		<ProjectReference Include="..\libs\ConfigurationLib\ConfigurationLib.csproj" />
+		<ProjectReference Include="..\Shared.Kernel\Shared.Kernel.csproj" />
 	</ItemGroup>
 
 </Project>

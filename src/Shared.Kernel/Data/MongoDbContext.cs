@@ -3,7 +3,7 @@ using ConfigurationLib.Models;
 using MongoDB.Driver;
 using System;
 
-namespace ConfigurationLib.Dashboard.Data
+namespace Shared.Kernel.Data
 {
     /// <summary>
     /// The mongo db context.

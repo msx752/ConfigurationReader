@@ -3,7 +3,7 @@ using MongoDB.Bson;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace ConfigurationLib.Dashboard.Data.Repos
+namespace Shared.Kernel.Repositories
 {
     public interface IApplicationConfigurationRepository
     {

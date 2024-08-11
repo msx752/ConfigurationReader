@@ -1,12 +1,11 @@
-using ConfigurationLib.Dashboard.Data;
-using ConfigurationLib.Dashboard.Data.Repos;
 using ConfigurationLib.Interfaces;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
 using Serilog;
+using Shared.Kernel.Data;
+using Shared.Kernel.Repositories;
 using System;
 
 namespace ConfigurationLib.Dashboard
