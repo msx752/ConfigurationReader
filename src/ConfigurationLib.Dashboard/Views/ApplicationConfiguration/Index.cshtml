@@ -1,0 +1,42 @@
+﻿@model ApplicationConfigurationViewModel
+@{
+    ViewData["Title"] = "Configration List";
+}
+
+<h2>Configuration List</h2>
+
+
+<br />
+<a asp-controller="ApplicationConfiguration" asp-action="Create">Create New Configuration</a>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Name</th>
+            <th>Type</th>
+            <th>Value</th>
+            <th>IsActive</th>
+            <th>Application Name</th>
+            <th><a asp-controller="ApplicationConfiguration" asp-action="Index">Refresh Page</a></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Listing)
+        {
+            <tr>
+                <td>@item.Id</td>
+                <td>@item.Name</td>
+                <td>@item.Type</td>
+                <td>@item.Value</td>
+                <td>@item.IsActive</td>
+                <td>@item.ApplicationName</td>
+                <td>
+                    
+                    <a asp-controller="ApplicationConfiguration" asp-action="Edit" asp-route-id="@item.Id">Edit</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+

@@ -1,0 +1,30 @@
+﻿@{
+    ViewData["Title"] = "Current Environment Variables";
+}
+<h1>@ViewData["Title"]</h1>
+
+<p>The information comes from ConfigurationReader.</p>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Type</th>
+            <th>Value</th>
+            <th><a asp-controller="ApplicationConfiguration" asp-action="Index">Refresh Page</a></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Listing)
+        {
+            <tr>
+                <td>@item.Id</td>
+                <td>@item.Name</td>
+                <td>@item.Type</td>
+                <td>@item.Value</td>
+                <td>@item.IsActive</td>
+                <td>@item.ApplicationName</td>
+            </tr>
+        }
+    </tbody>
+</table>

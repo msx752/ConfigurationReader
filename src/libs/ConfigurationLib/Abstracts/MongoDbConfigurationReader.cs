@@ -56,7 +56,7 @@ namespace ConfigurationLib.Abstracts
             _mongoClient = InitializeMongoClient(connectionString);
 
             _database = _mongoClient.GetDatabase(databaseName);
-
+           
             _collection = _database.GetCollection<ApplicationConfiguration>(collectionName);
         }
 

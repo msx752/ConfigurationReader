@@ -4,6 +4,6 @@ namespace ConfigurationLib.Interfaces
 {
     public interface IConfigurationReader : IDisposable
     {
-        T? GetValue<T>(string key) where T : struct;
+        T? GetValue<T>(string key);
     }
 }

@@ -75,19 +75,12 @@ namespace ConfigurationLib.Abstracts
         /// <value>A dictionary with a key of type string and a value of type object.</value>
         protected internal ConcurrentDictionary<string, object> Collection => _configurationCollection;
 
-        /// <summary>
-        /// TODO: Add Summary.
-        /// </summary>
         public void Dispose()
         {
             Dispose(disposing: true);
             GC.SuppressFinalize(this);
         }
 
-        /// <summary>
-        /// TODO: Add Summary.
-        /// </summary>
-        /// <returns>A <see cref="Task"/></returns>
         protected internal async Task ElapsedAsync()
         {
             if (onBreak || inProgress)
@@ -130,7 +123,7 @@ namespace ConfigurationLib.Abstracts
         /// <exception cref="NotSupportedException"></exception>
         /// <exception cref="ArgumentException"></exception>
         /// <returns>A <see cref="T? "/></returns>
-        public T? GetValue<T>(string key) where T : struct
+        public T GetValue<T>(string key)
         {
             try
             {
@@ -143,7 +136,7 @@ namespace ConfigurationLib.Abstracts
                 _ = Collection.TryGetValue(key, out var val);
 
                 if (val == null)
-                    return null;
+                    return default;
                 else if (val is T)
                     return (T)val;
                 else
@@ -155,24 +148,13 @@ namespace ConfigurationLib.Abstracts
             }
         }
 
-        /// <summary>
-        /// Start the timer.
-        /// </summary>
         protected internal void StartTimer()
         {
             _timer?.Change(0, _refreshTimerIntervalInMs);
         }
 
-        /// <summary>
-        /// TODO: Add Summary.
-        /// </summary>
-        /// <returns>A <see cref="Task"/></returns>
         protected internal abstract Task TriggerAsync();
 
-        /// <summary>
-        /// TODO: Add Summary.
-        /// </summary>
-        /// <param name="disposing">If true, disposing.</param>
         protected virtual void Dispose(bool disposing)
         {
             if (!_disposedValue)
@@ -188,12 +170,6 @@ namespace ConfigurationLib.Abstracts
             }
         }
 
-        /// <summary>
-        /// Initializes circuit breaker.
-        /// </summary>
-        /// <param name="exceptionsAllowedBeforeBreaking">The exceptions allowed before breaking.</param>
-        /// <param name="durationOfBreak">The duration of break.</param>
-        /// <returns>An <see cref="AsyncCircuitBreakerPolicy"/></returns>
         protected internal AsyncCircuitBreakerPolicy InitializeCircuitBreaker(int exceptionsAllowedBeforeBreaking, TimeSpan durationOfBreak)
         {
             var circuitBreakerPolicy = Policy
@@ -216,12 +192,6 @@ namespace ConfigurationLib.Abstracts
             return circuitBreakerPolicy;
         }
 
-        /// <summary>
-        /// Initializes the timer.
-        /// </summary>
-        /// <param name="callbackTask">The callback task.</param>
-        /// <param name="refreshTimerIntervalInMs">The refresh timer ınterval ın ms.</param>
-        /// <returns>A <see cref="Timer"/></returns>
         protected internal Timer InitializeTimer(TimerCallback callbackTask, int refreshTimerIntervalInMs)
                     => new(callbackTask, null, Timeout.Infinite, _refreshTimerIntervalInMs);
     }

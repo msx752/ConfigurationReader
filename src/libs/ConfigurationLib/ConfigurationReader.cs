@@ -34,10 +34,6 @@ namespace ConfigurationLib
             StartTimer();
         }
 
-        /// <summary>
-        /// TODO: Add Summary.
-        /// </summary>
-        /// <returns>A <see cref="Task"/></returns>
         protected internal override async Task TriggerAsync()
         {
             using var cursor = await ListConfigurationByApplicationNameAsync(_applicationName);
