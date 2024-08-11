@@ -159,5 +159,23 @@ namespace ConfigurationLib.Tests.Units
             // Assert
             Assert.True(true);
         }
+
+        [Fact]
+        public async Task ElapsedAsync_ShouldThrowExceptionIfInvervalLesThan100MS()
+        {
+            Assert.Throws<ArgumentException>(() => new TestConfigurationReaderBase(1));
+        }
+
+        private class TestConfigurationReaderBase : ConfigurationReaderBase
+        {
+            public TestConfigurationReaderBase(int refreshTimerIntervalInMs) : base(refreshTimerIntervalInMs)
+            {
+            }
+
+            protected async internal override Task TriggerAsync()
+            {
+
+            }
+        }
     }
 }

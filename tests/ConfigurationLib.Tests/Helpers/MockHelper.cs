@@ -18,9 +18,9 @@ namespace ConfigurationLib.Tests.Helpers
             return new Mock<MongoDbConfigurationReader>("mongodb://localhost:27017", 1000) { CallBase = true };
         }
 
-        public static Mock<ConfigurationReaderBase> CreateDefaultConfigurationReaderBase()
+        public static Mock<ConfigurationReaderBase> CreateDefaultConfigurationReaderBase(int intervalMs=1000)
         {
-            return new Mock<ConfigurationReaderBase>(1000) { CallBase = true };
+            return new Mock<ConfigurationReaderBase>(intervalMs) { CallBase = true };
         }
 
         public static Mock<MockAsyncCursor<ApplicationConfiguration>> CreateDefaultCursor(List<ApplicationConfiguration> configurations)
