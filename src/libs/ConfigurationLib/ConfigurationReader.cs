@@ -1,16 +1,16 @@
-﻿using ConfigLib.Abstracts;
-using ConfigLib.Interfaces;
+﻿using ConfigurationLib.Abstracts;
+using ConfigurationLib.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace ConfigLib
+namespace ConfigurationLib
 {
     /// <summary>
     /// The configuration reader.
     /// </summary>
-    public sealed class ConfigurationReader : MongoDbConfigurationReader, IConfigurationReader
+    public class ConfigurationReader : MongoDbConfigurationReader, IConfigurationReader
     {
         /// <summary>
         /// The application name.
@@ -38,7 +38,7 @@ namespace ConfigLib
         /// TODO: Add Summary.
         /// </summary>
         /// <returns>A <see cref="Task"/></returns>
-        protected override async Task TriggerAsync()
+        protected internal override async Task TriggerAsync()
         {
             using var cursor = await ListConfigurationByApplicationNameAsync(_applicationName);
 
@@ -56,7 +56,7 @@ namespace ConfigLib
                         if (string.IsNullOrWhiteSpace(configName))
                             continue;
 
-                        Type type = GetSupportedTypeByStringType(applicationConfiguration.Type);
+                        Type type = Extensions.GetSupportedTypeByStringType(applicationConfiguration.Type);
 
                         if (type == null)
                             continue;

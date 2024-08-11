@@ -3,15 +3,13 @@ using MongoDB.Driver;
 using System;
 using System.Threading.Tasks;
 
-namespace ConfigLib.Abstracts
+namespace ConfigurationLib.Abstracts
 {
     /// <summary>
     /// The mongo db configuration reader.
     /// </summary>
     public abstract class MongoDbConfigurationReader : ConfigurationReaderBase
     {
-        #region fields
-
         /// <summary>
         /// The collection name.
         /// </summary>
@@ -42,8 +40,6 @@ namespace ConfigLib.Abstracts
         /// </summary>
         private readonly MongoClient _mongoClient;
 
-        #endregion fields
-
         /// <summary>
         /// Initializes a new instance of the <see cref="MongoDbConfigurationReader"/> class.
         /// </summary>
@@ -64,32 +60,24 @@ namespace ConfigLib.Abstracts
             _collection = _database.GetCollection<ApplicationConfiguration>(collectionName);
         }
 
-        #region protected methods
-
         /// <summary>
         /// Initializes mongo client.
         /// </summary>
         /// <param name="connectionString">The connection string.</param>
         /// <returns>A <see cref="MongoClient"/></returns>
-        protected MongoClient InitializeMongoClient(string connectionString)
+        protected internal MongoClient InitializeMongoClient(string connectionString)
             => new(connectionString);
-
-        #endregion protected methods
-
-        #region private methods
 
         /// <summary>
         /// List configuration by application name.
         /// </summary>
         /// <param name="applicationName">The application name.</param>
         /// <returns>A <see cref="Task"/> of type IAsyncCursor</returns>
-        protected async Task<IAsyncCursor<ApplicationConfiguration>> ListConfigurationByApplicationNameAsync(string applicationName)
+        protected internal virtual async Task<IAsyncCursor<ApplicationConfiguration>> ListConfigurationByApplicationNameAsync(string applicationName)
         {
             _database.CreateCollection(collectionName);
 
             return await _collection.FindAsync(f => f.ApplicationName.ToLowerInvariant() == applicationName.ToLowerInvariant() && f.IsActive == true);
         }
-
-        #endregion private methods
     }
 }

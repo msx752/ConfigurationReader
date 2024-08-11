@@ -2,29 +2,16 @@
 using Polly.CircuitBreaker;
 using System;
 using System.Collections.Concurrent;
-using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace ConfigLib.Abstracts
+namespace ConfigurationLib.Abstracts
 {
     /// <summary>
     /// The configuration reader base.
     /// </summary>
     public abstract class ConfigurationReaderBase : IDisposable
     {
-        #region fields
-
-        /// <summary>
-        /// Supported types.
-        /// </summary>
-        private static readonly Dictionary<Type, string> _supportedTypes = new(new KeyValuePair<Type, string>[4] {
-            new(typeof(int), "Int"),
-            new(typeof(string), "String"),
-            new(typeof(double), "Double"),
-            new(typeof(bool), "Boolean"),
-        });
-
         /// <summary>
         /// The circuit breaker policy.
         /// </summary>
@@ -65,8 +52,6 @@ namespace ConfigLib.Abstracts
         /// </summary>
         private bool onBreak = false;
 
-        #endregion fields
-
         /// <summary>
         /// Initializes a new instance of the <see cref="ConfigurationReaderBase"/> class.
         /// </summary>
@@ -87,9 +72,7 @@ namespace ConfigLib.Abstracts
         /// Gets the collection.
         /// </summary>
         /// <value>A dictionary with a key of type string and a value of type object.</value>
-        protected ConcurrentDictionary<string, object> Collection => _configurationCollection;
-
-        #region public mehods
+        protected internal ConcurrentDictionary<string, object> Collection => _configurationCollection;
 
         /// <summary>
         /// TODO: Add Summary.
@@ -101,157 +84,10 @@ namespace ConfigLib.Abstracts
         }
 
         /// <summary>
-        /// Get the value.
-        /// </summary>
-        /// <typeparam name="T"/>
-        /// <param name="key">The key.</param>
-        /// <exception cref="ArgumentNullException"></exception>
-        /// <exception cref="NotSupportedException"></exception>
-        /// <exception cref="ArgumentException"></exception>
-        /// <returns>A <see cref="T? "/></returns>
-        public T? GetValue<T>(string key) where T : struct
-        {
-            try
-            {
-                if (string.IsNullOrWhiteSpace(key))
-                    throw new ArgumentNullException(nameof(key), "parameter value cannot be null or empty.");
-
-                if (!IsSupportedType(typeof(T)))
-                    throw new NotSupportedException($"{typeof(T).Name} type not supported.");
-
-                _ = Collection.TryGetValue(key, out var val);
-
-                if (val == null)
-                    return null;
-                else if (val is T)
-                    return (T)val;
-                else
-                    throw new ArgumentException($"'{val.GetType().Name}' type doesn't match by requested '{typeof(T).Name}' type.");
-            }
-            catch (Exception e)
-            {
-                throw;
-            }
-        }
-
-        #endregion public mehods
-
-        #region static methods
-
-        /// <summary>
-        /// Get supported type by string type.
-        /// </summary>
-        /// <param name="stringType">The string type.</param>
-        /// <returns>A <see cref="Type? "/></returns>
-        internal static Type? GetSupportedTypeByStringType(string stringType)
-        {
-            if (string.IsNullOrWhiteSpace(stringType))
-                return null;
-
-            foreach (var item in _supportedTypes)
-            {
-                if (string.Equals(stringType, item.Value, StringComparison.InvariantCultureIgnoreCase))
-                    return item.Key;
-            }
-
-            return null;
-        }
-
-        /// <summary>
-        /// Checks if is supported type.
-        /// </summary>
-        /// <param name="type">The type.</param>
-        /// <returns>A <see cref="bool"/></returns>
-        internal static bool IsSupportedType(Type type)
-        {
-            if (type == null)
-                return false;
-
-            return _supportedTypes.ContainsKey(type);
-        }
-
-        #endregion static methods
-
-        #region protected methods
-
-        /// <summary>
-        /// TODO: Add Summary.
-        /// </summary>
-        /// <param name="disposing">If true, disposing.</param>
-        protected virtual void Dispose(bool disposing)
-        {
-            if (!_disposedValue)
-            {
-                if (disposing)
-                {
-                    try { _timer?.Dispose(); } catch { }
-                    _supportedTypes.Clear();
-
-                    _configurationCollection.Clear();
-                }
-
-                _disposedValue = true;
-            }
-        }
-
-        /// <summary>
-        /// Initializes the timer.
-        /// </summary>
-        /// <param name="callbackTask">The callback task.</param>
-        /// <param name="refreshTimerIntervalInMs">The refresh timer ınterval ın ms.</param>
-        /// <returns>A <see cref="Timer"/></returns>
-        protected Timer InitializeTimer(TimerCallback callbackTask, int refreshTimerIntervalInMs)
-                    => new(callbackTask, null, Timeout.Infinite, _refreshTimerIntervalInMs);
-
-        /// <summary>
-        /// Initializes circuit breaker.
-        /// </summary>
-        /// <param name="exceptionsAllowedBeforeBreaking">The exceptions allowed before breaking.</param>
-        /// <param name="durationOfBreak">The duration of break.</param>
-        /// <returns>An <see cref="AsyncCircuitBreakerPolicy"/></returns>
-        protected AsyncCircuitBreakerPolicy InitializeCircuitBreaker(int exceptionsAllowedBeforeBreaking, TimeSpan durationOfBreak)
-        {
-            var circuitBreakerPolicy = Policy
-                .Handle<TimeoutException>()
-                .CircuitBreakerAsync(
-                    exceptionsAllowedBeforeBreaking,
-                    durationOfBreak,
-                    onBreak: (exception, timespan) =>
-                    {
-                        onBreak = true;
-                    },
-                    onReset: () =>
-                    {
-                        onBreak = false;
-                    }
-                );
-
-            return circuitBreakerPolicy;
-        }
-
-        /// <summary>
-        /// Start the timer.
-        /// </summary>
-        protected void StartTimer()
-        {
-            _timer?.Change(0, _refreshTimerIntervalInMs);
-        }
-
-        /// <summary>
         /// TODO: Add Summary.
         /// </summary>
         /// <returns>A <see cref="Task"/></returns>
-        protected abstract Task TriggerAsync();
-
-        #endregion protected methods
-
-        #region private methods
-
-        /// <summary>
-        /// TODO: Add Summary.
-        /// </summary>
-        /// <returns>A <see cref="Task"/></returns>
-        private async Task ElapsedAsync()
+        protected internal async Task ElapsedAsync()
         {
             if (onBreak || inProgress)
             {
@@ -280,6 +116,106 @@ namespace ConfigLib.Abstracts
             }
         }
 
-        #endregion private methods
+        /// <summary>
+        /// Get the value.
+        /// </summary>
+        /// <typeparam name="T"/>
+        /// <param name="key">The key.</param>
+        /// <exception cref="ArgumentNullException"></exception>
+        /// <exception cref="NotSupportedException"></exception>
+        /// <exception cref="ArgumentException"></exception>
+        /// <returns>A <see cref="T? "/></returns>
+        public T? GetValue<T>(string key) where T : struct
+        {
+            try
+            {
+                if (string.IsNullOrWhiteSpace(key))
+                    throw new ArgumentNullException(nameof(key), "parameter value cannot be null or empty.");
+
+                if (!Extensions.IsSupportedType(typeof(T)))
+                    throw new NotSupportedException($"{typeof(T).Name} type not supported.");
+
+                _ = Collection.TryGetValue(key, out var val);
+
+                if (val == null)
+                    return null;
+                else if (val is T)
+                    return (T)val;
+                else
+                    throw new ArgumentException($"'{val.GetType().Name}' type doesn't match by requested '{typeof(T).Name}' type.");
+            }
+            catch (Exception e)
+            {
+                throw;
+            }
+        }
+
+        /// <summary>
+        /// Start the timer.
+        /// </summary>
+        protected internal void StartTimer()
+        {
+            _timer?.Change(0, _refreshTimerIntervalInMs);
+        }
+
+        /// <summary>
+        /// TODO: Add Summary.
+        /// </summary>
+        /// <returns>A <see cref="Task"/></returns>
+        protected internal abstract Task TriggerAsync();
+
+        /// <summary>
+        /// TODO: Add Summary.
+        /// </summary>
+        /// <param name="disposing">If true, disposing.</param>
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!_disposedValue)
+            {
+                if (disposing)
+                {
+                    try { _timer?.Dispose(); } catch { }
+
+                    _configurationCollection.Clear();
+                }
+
+                _disposedValue = true;
+            }
+        }
+
+        /// <summary>
+        /// Initializes circuit breaker.
+        /// </summary>
+        /// <param name="exceptionsAllowedBeforeBreaking">The exceptions allowed before breaking.</param>
+        /// <param name="durationOfBreak">The duration of break.</param>
+        /// <returns>An <see cref="AsyncCircuitBreakerPolicy"/></returns>
+        protected internal AsyncCircuitBreakerPolicy InitializeCircuitBreaker(int exceptionsAllowedBeforeBreaking, TimeSpan durationOfBreak)
+        {
+            var circuitBreakerPolicy = Policy
+                .Handle<TimeoutException>()
+                .CircuitBreakerAsync(
+                    exceptionsAllowedBeforeBreaking,
+                    durationOfBreak,
+                    onBreak: (exception, timespan) =>
+                    {
+                        onBreak = true;
+                    },
+                    onReset: () =>
+                    {
+                        onBreak = false;
+                    }
+                );
+
+            return circuitBreakerPolicy;
+        }
+
+        /// <summary>
+        /// Initializes the timer.
+        /// </summary>
+        /// <param name="callbackTask">The callback task.</param>
+        /// <param name="refreshTimerIntervalInMs">The refresh timer ınterval ın ms.</param>
+        /// <returns>A <see cref="Timer"/></returns>
+        protected internal Timer InitializeTimer(TimerCallback callbackTask, int refreshTimerIntervalInMs)
+                    => new(callbackTask, null, Timeout.Infinite, _refreshTimerIntervalInMs);
     }
 }

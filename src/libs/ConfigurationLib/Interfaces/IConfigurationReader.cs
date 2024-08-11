@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace ConfigLib.Interfaces
+namespace ConfigurationLib.Interfaces
 {
     public interface IConfigurationReader : IDisposable
     {
