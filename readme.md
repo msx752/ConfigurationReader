@@ -184,6 +184,7 @@ Bu sınıflar, veri erişim katmanını temsil eder ve MongoDB üzerindeki kolek
 - Yapılandırma ekleme, aktif/pasif hale getirme ve hataların listelenmesi işlemleri yapılır.
 - Hata loglama için `IsLoggingEnabled` değeri `true` olmalıdır ve `ApplicationName` değeri **Dashboard** olmalıdır.
 - Yapılandırma ayarları her 3 saniyede bir yenilenir.
+- Servis URL'i: http://localhost:50400
 - **Örnek Konfigürasyonlar:**
   - `int MaxItemCount`
   - `boolean IsBasketEnabled`
@@ -193,6 +194,7 @@ Bu sınıflar, veri erişim katmanını temsil eder ve MongoDB üzerindeki kolek
 - Uygulama hatalarını loglar ve RabbitMQ üzerinden gelen hata mesajlarını MongoDB'ye kaydeder.
 - Hata mesajları işlendiğinde log atmak için `ApplicationName` değeri **ServiceLog** olmalıdır.
 - Yapılandırma ayarları her 5 saniyede bir yenilenir.
+- Servis URL'i: http://localhost:50600/Configuration
 
 ### **2. Teknolojiler**
 
