@@ -3,6 +3,7 @@
     "Development": {
       "commandName": "Project",
       "launchBrowser": true,
+      "launchUrl": "Configuration",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       },
@@ -12,6 +13,7 @@
     "Local": {
       "commandName": "Project",
       "launchBrowser": true,
+      "launchUrl": "Configuration",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Local"
       },
