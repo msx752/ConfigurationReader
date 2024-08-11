@@ -6,9 +6,34 @@
 
 <form method="post">
     <div class="form-group">
+        <label asp-for="Editing.Id"></label>
+        <input asp-for="Editing.Id" class="form-control" />
+        <span asp-validation-for="Editing.Id" class="text-danger"></span>
+    </div>
+    <div class="form-group">
         <label asp-for="Editing.Name"></label>
         <input asp-for="Editing.Name" class="form-control" />
         <span asp-validation-for="Editing.Name" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Editing.ApplicationName"></label>
+        <input asp-for="Editing.ApplicationName" class="form-control" />
+        <span asp-validation-for="Editing.ApplicationName" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Editing.Value"></label>
+        <input asp-for="Editing.Value" class="form-control" />
+        <span asp-validation-for="Editing.Value" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <input asp-for="Editing.IsActive" class="form-check-input" type="checkbox" />
+        <label asp-for="Editing.IsActive"></label>
+        <span asp-validation-for="Editing.IsActive" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Editing.Type"></label>
+        <input asp-for="Editing.Type" class="form-control" />
+        <span asp-validation-for="Editing.Type" class="text-danger"></span>
     </div>
     <button type="submit" class="btn btn-primary">Save</button>
 </form>

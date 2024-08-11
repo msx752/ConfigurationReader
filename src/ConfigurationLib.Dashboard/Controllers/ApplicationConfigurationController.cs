@@ -64,7 +64,7 @@ namespace ConfigurationLib.Dashboard.Controllers
 
                 await _applicationConfigurationRepository.Update(editedModel);
 
-                return View("Index");
+                return RedirectToAction("Index");
             }
             catch (Exception e)
             {
@@ -73,9 +73,39 @@ namespace ConfigurationLib.Dashboard.Controllers
             }
         }
 
-        public IActionResult Create()
+        [HttpGet()]
+
+        public async Task<IActionResult> Create()
         {
-            return View();
+            ApplicationConfigurationViewModel model = new();
+
+            model.Creating = new();
+
+            return View(model);
+        }
+
+        [HttpPost()]
+        public async Task<IActionResult> Create(ApplicationConfigurationViewModel model)
+        {
+            try
+            {
+                if (model == null)
+                    throw new ArgumentNullException(nameof(model));
+
+                if (model.Creating == null)
+                    throw new ArgumentNullException(nameof(model.Creating));
+
+                var createdModel = _mapper.Map<ApplicationConfiguration>(model.Creating);
+
+                await _applicationConfigurationRepository.Add(createdModel);
+
+                return RedirectToAction("Index");
+            }
+            catch (Exception e)
+            {
+                var routeValues = new { message = e.Message, stackTrace = e.StackTrace };
+                return RedirectToAction("Error", "Home", routeValues);
+            }
         }
     }
 }

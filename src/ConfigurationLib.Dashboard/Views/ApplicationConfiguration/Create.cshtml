@@ -1,0 +1,35 @@
+﻿@model ApplicationConfigurationViewModel
+
+<h2>Create Configuration</h2>
+
+<a asp-controller="ApplicationConfiguration" asp-action="Index">Back to List</a>
+
+<form method="post">
+    <div class="form-group">
+        <label asp-for="Creating.Name"></label>
+        <input asp-for="Creating.Name" class="form-control" />
+        <span asp-validation-for="Editing.Name" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Creating.ApplicationName"></label>
+        <input asp-for="Creating.ApplicationName" class="form-control" />
+        <span asp-validation-for="Creating.ApplicationName" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Creating.Value"></label>
+        <input asp-for="Creating.Value" class="form-control" />
+        <span asp-validation-for="Creating.Value" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <input asp-for="Creating.IsActive" class="form-check-input" type="checkbox" />
+        <label asp-for="Creating.IsActive"></label>
+        <span asp-validation-for="Creating.IsActive" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Creating.Type"></label>
+        <input asp-for="Creating.Type" class="form-control" />
+        <span asp-validation-for="Creating.Type" class="text-danger"></span>
+    </div>
+    <button type="submit" class="btn btn-primary">Create</button>
+</form>
+

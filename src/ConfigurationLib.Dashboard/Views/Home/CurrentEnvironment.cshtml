@@ -1,6 +1,15 @@
-﻿@{
-    ViewData["Title"] = "Privacy Policy";
+﻿@model HomeViewModel
+@{
+    ViewData["Title"] = "Current Environment Variables";
 }
 <h1>@ViewData["Title"]</h1>
 
-<p>Use this page to detail your site's privacy policy.</p>
+<p>The information comes from ConfigurationReader.</p>
+
+<p>
+    <strong>IsBasketEnabled:</strong> <code>@Model.CurrentEnvironment.IsBasketEnabled</code>
+    <br />
+    <strong>MaxItemCount:</strong> <code>@Model.CurrentEnvironment.MaxItemCount</code>
+    <br />
+    <strong>SiteName:</strong> <code>@Model.CurrentEnvironment.SiteName</code>
+</p>
