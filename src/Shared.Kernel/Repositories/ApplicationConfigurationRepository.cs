@@ -62,6 +62,15 @@ namespace Shared.Kernel.Repositories
                 if (type == null)
                     throw new NotSupportedException($"{configuration.Type} type not supported.");
 
+                var response = (await _mongoDbContext.Configurations
+                 .FindAsync(f => f.ApplicationName.ToLowerInvariant() == configuration.ApplicationName.ToLowerInvariant()
+                                && f.Name.ToLowerInvariant() == configuration.Name.ToLowerInvariant()
+                                && f.IsActive)
+                 ).FirstOrDefault();
+
+                if (response != null && configuration.IsActive)
+                    throw new InvalidOperationException($"given '{configuration.Name}' name exists for the ApplicationName: '{configuration.ApplicationName}' and has Active state, you cannot add anoher active state for the same key.");
+
                 object configValue = Convert.ChangeType(configuration.Value, type);
 
                 await _mongoDbContext.Configurations.InsertOneAsync(configuration);
@@ -151,6 +160,15 @@ namespace Shared.Kernel.Repositories
                 var type = Extensions.GetSupportedTypeByStringType(configuration.Type);
                 if (type == null)
                     throw new NotSupportedException($"{configuration.Type} type not supported.");
+
+                var response = (await _mongoDbContext.Configurations
+                 .FindAsync(f => f.ApplicationName.ToLowerInvariant() == configuration.ApplicationName.ToLowerInvariant() 
+                                && f.Name.ToLowerInvariant() == configuration.Name.ToLowerInvariant() 
+                                && f.IsActive && f.Id != configuration.Id)
+                 ).FirstOrDefault();
+
+                if (response != null && configuration.IsActive)
+                    throw new InvalidOperationException($"given '{configuration.Name}' name exists for the ApplicationName: '{configuration.ApplicationName}' and has Active state, you cannot set anoher active state for the same key.");
 
                 object configValue = Convert.ChangeType(configuration.Value, type);
 
