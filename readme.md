@@ -43,11 +43,6 @@ ConfigurationLib, .NET tabanlı uygulamalar için yapılandırma ayarlarını me
 - **`GetValue<T>(string key)`**: Belirtilen anahtar ile yapılandırma değerini döner. 
   - **Parametreler**: 
     - `key`: Yapılandırma değerinin anahtarı.
-  - **Döndürülen Değer**: Generic türde bir değer döner.
-- **`ListConfigurationByApplicationNameAsync(string applicationName)`**: Belirtilen uygulama adına göre yapılandırma ayarlarını listeleyen asenkron metod.
-  - **Parametreler**:
-    - `applicationName`: Yapılandırma ayarlarının alınacağı uygulama adı.
-  - **Döndürülen Değer**: Asenkron görev olarak yapılandırma öğelerinin listesi.
 
 ### 1.3 `ConfigurationReaderBase` Sınıfı
 
@@ -61,12 +56,14 @@ ConfigurationLib, .NET tabanlı uygulamalar için yapılandırma ayarlarını me
 - **`_timer`**: Zamanlayıcı, yapılandırma ayarlarını düzenli olarak yeniler.
 - **`_disposedValue`**: Sınıfın serbest bırakılma durumu.
 - **`Collection`**: Yapılandırma koleksiyonunu döner.
-
+- **Overlapping** kontrolü, aktif bir işlem olduğunda thread-safe bir yöntem ile 2.tetiklemeyi **_refreshTimerIntervalInM**s değeri kadar öteler.
+  
 #### **Metotlar:**
 - **`GetValue<T>(string key)`**: Belirtilen anahtara karşılık gelen değeri döner. Hatalar:
   - **ArgumentNullException**
   - **NotSupportedException**
   - **ArgumentException**
+  - **Döndürülen Değer**: Generic türde bir değer döner.
 
 ### 1.4 `MongoDbConfigurationReader` Sınıfı
 
@@ -80,7 +77,10 @@ ConfigurationLib, .NET tabanlı uygulamalar için yapılandırma ayarlarını me
 
 #### **Metotlar:**
 - **`InitializeMongoClient(string connectionString)`**: MongoDB istemcisini başlatır.
-- **`ListConfigurationByApplicationNameAsync(string applicationName)`**: Belirtilen uygulama adına göre yapılandırma ayarlarını listeler.
+- **`ListConfigurationByApplicationNameAsync(string applicationName)`**: Belirtilen uygulama adına göre yapılandırma ayarlarını listeleyen asenkron metod.
+  - **Parametreler**:
+    - `applicationName`: Yapılandırma ayarlarının alınacağı uygulama adı.
+  - **Döndürülen Değer**: Asenkron görev olarak yapılandırma öğelerinin listesi.
 
 ### 1.5 `ConfigurationReader` Sınıfı
 
